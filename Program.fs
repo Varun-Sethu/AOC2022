@@ -2,12 +2,12 @@
 open System.IO
 open Solutions
 
-let problemRunners = Map[
+let problemRunners = Map [
     (1, Solutions.one)
 ]
 
 [<EntryPoint>]
-let main (args: string[]) =
+let main args =
     let day = args[0] |> int
 
     match problemRunners.TryFind day with
