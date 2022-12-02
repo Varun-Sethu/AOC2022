@@ -1,4 +1,4 @@
-module Solutions
+module Solutions.One
 
 open System
 
