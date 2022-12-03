@@ -8,6 +8,7 @@ type problemSolution = { partOne: solver; partTwo: solver }
 let problemRunners = Map [
     (1, { partOne = One.onePartOne; partTwo = One.onePartTwo})
     (2, { partOne = Two.partOne; partTwo = Two.partTwo})
+    (3, { partOne = Three.partOne; partTwo = Three.partTwo})
 ]
 
 [<EntryPoint>]

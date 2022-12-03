@@ -8,7 +8,7 @@ type round = { mine: hand; theirs: hand }
 let parsePlay = function | "A" | "X" -> hand.Rock | "B" | "Y" -> hand.Paper | "C" | "Z" -> hand.Scisors
 let parseRoundNaive (round: string[]) = { mine = parsePlay round[1]; theirs = parsePlay round[0] }
 
-let parseRoundGigaBrain (round: string[]): round =
+let parseRoundGigaBrain (round: string[]) =
     let theirs = parsePlay round[0]
     let mine = match round[1] with
                 | "X" -> ((int theirs - 1) + 3) % 3 |> enum
