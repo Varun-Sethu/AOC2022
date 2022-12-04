@@ -3,9 +3,10 @@ module Solutions.Four
 module range =
     type range = { rangeStart: int; rangeEnd: int }
 
-    let parse (range: string) = match range.Split "-" with 
-                                | [| start; end' |] -> { rangeStart = int start; rangeEnd = int end' }
-                                | _ -> failwith "L + ratio + bad file"
+    let parse (range: string) = 
+        match range.Split "-" with 
+        | [| start; end' |] -> { rangeStart = int start; rangeEnd = int end' }
+        | _ -> failwith "L + ratio + bad file"
 
     let parsePair (pair: string) = 
         pair.Split "," 
