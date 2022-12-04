@@ -1,21 +1,16 @@
 module Solutions.Four
 
 module range =
-    type range = { rangeStart: int; rangeEnd: int }
-
-    let parse (range: string) = 
-        match range.Split "-" with 
-        | [| start; end' |] -> { rangeStart = int start; rangeEnd = int end' }
-        | _ -> failwith "L + ratio + bad file"
+    type range = { start: int; end': int }
 
     let parsePair (pair: string) = 
-        pair.Split "," 
+        pair.Split([|','; '-'|])
             |> function 
-                | [| a; b |] -> (parse a, parse b)
+                | [| aStart; aEnd; bStart; bEnd |] -> ( { start = int aStart; end' = int aEnd }, { start = int bStart; end' = int bEnd })
                 |  _ -> failwith "L + ratio + bad file"
 
-    let areEnglufing ({ rangeStart = sa; rangeEnd = ea }, { rangeStart = bs; rangeEnd = eb }) = (sa >= bs && ea <= eb) || (sa <= bs && ea >= eb)
-    let areOverlapping (a: range, b: range) = max a.rangeStart b.rangeStart <= min a.rangeEnd b.rangeEnd
+    let areEnglufing ({ start = sa; end' = ea }, { start = bs; end' = eb }) = (sa >= bs && ea <= eb) || (sa <= bs && ea >= eb)
+    let areOverlapping (a: range, b: range) = max a.start b.start <= min a.end' b.end'
 
 let getNumPairsWhere predicate pairs =
     pairs
