@@ -1,18 +1,25 @@
 module Solutions.Four
 
-type range = { rangeStart: int; rangeEnd: int }
+module range =
+    type range = { rangeStart: int; rangeEnd: int }
 
-let parseRange (range: string) = let ranges = range.Split "-" in { rangeStart = int ranges[0]; rangeEnd = int ranges[1] }
-let parseRangePair (pair: string) = 
-    pair.Split "," 
-        |> fun [| a; b |] -> (parseRange a, parseRange b)
+    let parse (range: string) = match range.Split "-" with 
+                                | [| start; end' |] -> { rangeStart = int start; rangeEnd = int end' }
+                                | _ -> failwith "L + ratio + bad file"
 
-let contains range x = range.rangeStart <= x && x <= range.rangeEnd
-let rangesEngulf (a: range, b: range) = 
-    (contains a b.rangeStart && contains a b.rangeEnd) || 
-    (contains b a.rangeStart && contains b a.rangeEnd)
+    let parsePair (pair: string) = 
+        pair.Split "," 
+            |> function 
+                | [| a; b |] -> (parse a, parse b)
+                |  _ -> failwith "L + ratio + bad file"
 
-let rangesOverlap (a: range, b: range) = max a.rangeStart b.rangeStart <= min a.rangeEnd b.rangeEnd
+    let areEnglufing ({ rangeStart = sa; rangeEnd = ea }, { rangeStart = bs; rangeEnd = eb }) = (sa >= bs && ea <= eb) || (sa <= bs && ea >= eb)
+    let areOverlapping (a: range, b: range) = max a.rangeStart b.rangeStart <= min a.rangeEnd b.rangeEnd
 
-let partOne: string seq -> string = Seq.filter (parseRangePair >> rangesEngulf) >> Seq.length >> string
-let partTwo: string seq -> string = Seq.filter (parseRangePair >> rangesOverlap) >> Seq.length >> string
+let getNumPairsWhere predicate pairs =
+    pairs
+        |> Seq.filter (range.parsePair >> predicate)
+        |> Seq.length
+
+let partOne: string seq -> int = getNumPairsWhere range.areEnglufing
+let partTwo: string seq -> int = getNumPairsWhere range.areOverlapping

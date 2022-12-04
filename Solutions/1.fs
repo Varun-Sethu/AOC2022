@@ -9,5 +9,5 @@ let rec parseCalorieRecords = function
 
 let totalCalorieRecords: seq<string> -> int list = List.ofSeq >> parseCalorieRecords >> List.map List.sum >> List.sortByDescending id
 
-let onePartOne: seq<string> -> string = totalCalorieRecords >> List.head >> string
-let onePartTwo: seq<string> -> string = totalCalorieRecords >> List.take 3 >> List.sum >> string
+let onePartOne: seq<string> -> int = totalCalorieRecords >> List.head
+let onePartTwo: seq<string> -> int = totalCalorieRecords >> List.take 3 >> List.sum

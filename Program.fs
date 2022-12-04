@@ -2,7 +2,7 @@
 open System.IO
 open Solutions
 
-type solver = seq<string> -> string
+type solver = seq<string> -> int
 type problemSolution = { partOne: solver; partTwo: solver }
 
 let problemRunners = Map [
@@ -18,7 +18,7 @@ let main args =
     let part = args[1] |> int
 
     match problemRunners.TryFind day with
-    | Some solvers -> System.IO.File.ReadLines($"Inputs/{day}.txt") |> (if part = 1 then solvers.partOne else solvers.partTwo) |> printf "%s\n"
+    | Some solvers -> System.IO.File.ReadLines($"Inputs/{day}.txt") |> (if part = 1 then solvers.partOne else solvers.partTwo) |> printf "%d\n"
     | None -> printf $"no solver for day {day} part {part} exists\n"
 
     0

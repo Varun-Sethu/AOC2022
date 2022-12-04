@@ -23,7 +23,7 @@ let scoreRound round = scoreHand round.mine + match round with
                                               | { mine = x; theirs = y } when x = y -> 3
                                               | _ -> 0 
 
-let solve parser : seq<string> -> string = Seq.map (fun round -> round.Split ' ' |> parser |> scoreRound) >> Seq.sum >> string
+let solve parser : string seq -> int = Seq.map (fun round -> round.Split ' ' |> parser |> scoreRound) >> Seq.sum
 
-let partOne: seq<string> -> string = solve parseRoundNaive
-let partTwo: seq<string> -> string = solve parseRoundGigaBrain
+let partOne: string seq -> int = solve parseRoundNaive
+let partTwo: string seq -> int = solve parseRoundGigaBrain
