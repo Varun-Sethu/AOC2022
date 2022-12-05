@@ -25,7 +25,6 @@ module cargo =
                          | CrateMover9000 -> List.rev cargoBlock
                          | CrateMover9001 -> cargoBlock
 
-        // so ugly :(((
         let newFrom = ship.Item (instruction.from - 1) |> List.skip instruction.amt
         let newTo =  movedCargo @ ship.Item (instruction.to' - 1)
         ship |> List.mapi (
