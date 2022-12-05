@@ -13,5 +13,5 @@ let getDuplicateItem: string seq -> char =
         >> Set.toList 
         >> List.head
 
-let partOne: string seq -> int = Seq.map (splitIntoComparments >> getDuplicateItem >> priority) >> Seq.sum
-let partTwo: string seq -> int = Seq.chunkBySize 3 >> Seq.map (getDuplicateItem >> priority) >> Seq.sum
+let partOne: string seq -> string = Seq.map (splitIntoComparments >> getDuplicateItem >> priority) >> Seq.sum >> string
+let partTwo: string seq -> string = Seq.chunkBySize 3 >> Seq.map (getDuplicateItem >> priority) >> Seq.sum >> string

@@ -17,5 +17,5 @@ let getNumPairsWhere predicate pairs =
         |> Seq.filter (range.parsePair >> predicate)
         |> Seq.length
 
-let partOne: string seq -> int = getNumPairsWhere range.areEnglufing
-let partTwo: string seq -> int = getNumPairsWhere range.areOverlapping
+let partOne: string seq -> string = getNumPairsWhere range.areEnglufing >> string
+let partTwo: string seq -> string = getNumPairsWhere range.areOverlapping >> string
