@@ -36,8 +36,11 @@ module cargo =
 
 
 let solveWith (machine: cargo.machine) (file: string seq) =
-    let ship = file |> Seq.takeWhile (fun s -> s <> "") |> cargo.parseShip
-    let instructions = file |> Seq.skipWhile (fun s -> s <> "") |> Seq.skip 1 |> Seq.map cargo.parseInstruction
+    let rawShip = file |> Seq.takeWhile (fun s -> s <> "")
+    let rawInstructions = file |> Seq.skip (Seq.length rawShip + 1)
+
+    let ship = cargo.parseShip rawShip
+    let instructions = Seq.map cargo.parseInstruction rawInstructions
 
     instructions 
         |> Seq.fold (fun s i -> cargo.applyInstruction machine i s) ship
