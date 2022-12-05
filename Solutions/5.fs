@@ -7,7 +7,6 @@ module cargo =
     type craneInstruction = { amt: int; from: int; to': int }
     type machine = CrateMover9000 | CrateMover9001
 
-
     let parseInstruction (ins: string) = 
         match ins.Split " " with
             | [| "move"; amt; "from"; from; "to"; to' |] -> { amt = int amt; from = int from; to' = int to' }
@@ -35,6 +34,7 @@ module cargo =
                 | i when i = instruction.from - 1 -> newFrom
                 | i when i = instruction.to' - 1 -> newTo
                 | _ -> x)
+
 
 let solveWith (machine: cargo.machine) (file: string seq) =
     let ship = file |> Seq.takeWhile (fun s -> s <> "") |> cargo.parseShip
