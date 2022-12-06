@@ -27,8 +27,8 @@ module cargo =
 
         let newFrom = ship.Item (instruction.from - 1) |> List.skip instruction.amt
         let newTo =  movedCargo @ ship.Item (instruction.to' - 1)
-        ship |> List.mapi (
-            fun i x ->
+        ship |> 
+            List.mapi (fun i x ->
                 match i with
                 | i when i = instruction.from - 1 -> newFrom
                 | i when i = instruction.to' - 1 -> newTo
