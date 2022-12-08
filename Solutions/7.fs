@@ -71,10 +71,10 @@ module Interpetter =
 let readFSState = Log.parseLog >> Seq.skip 1 >> Seq.fold Interpetter.processLine ([FS.Dir ("/", [])]) >> Interpetter.collapseState >> Seq.head
 
 let partOne: string seq -> string = readFSState >> FS.getDirectoryStatistics >> List.filter (fun (_, b) -> b < 100000) >> List.sumBy (fun (_, b) -> b) >> string
+
 let partTwo (file: string seq) =
     let fsState = file |> readFSState |> FS.getDirectoryStatistics
     let (_, usedSpace) = fsState |> List.find (fun (name, _) -> name = "/")
-
     fsState
         |> List.filter (fun (_, size) -> size > (30000000 - (70000000 - usedSpace))) 
         |> List.minBy (fun (_, size) -> size) |> string
