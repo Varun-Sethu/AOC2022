@@ -6,10 +6,6 @@ module FS =
     type FSNode =
         | File of string * int
         | Dir of string * list<FSNode>
-        override this.ToString () =
-            match this with
-                | File (name, size)  -> "file " + name.ToString() + ": " + size.ToString()
-                | Dir  (name, files) -> "dir " + name.ToString() + " files:" + (List.fold (fun acc f -> acc + " " + f.ToString()) "" files)
 
     let private createOrUpdateEntity (comparer: FSNode -> FSNode -> bool) newEntity =
         function
