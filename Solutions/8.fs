@@ -36,17 +36,11 @@ let partOne (unparsedGrid: string seq) =
     let (numRows, numCols) = (grid.Length, grid[0].Length)
     
     let isVisible = isVisibleIn grid (numRows, numCols)
-    List.allPairs [0 .. numRows - 1] [0 .. numCols - 1]
-        |> List.filter (fun (row, col) -> isVisible (row, col))
-        |> List.length
-        |> string
+    List.allPairs [0 .. numRows - 1] [0 .. numCols - 1] |> List.filter (fun (row, col) -> isVisible (row, col)) |> List.length |> string
 
 let partTwo (unparsedGrid: string seq) =
     let grid = parseGrid unparsedGrid
     let (numRows, numCols) = (grid.Length, grid[0].Length)
 
     let getScenicScore = scenicScoreFor grid (numRows, numCols)
-    List.allPairs [0 .. numRows - 1] [0 .. numCols - 1]
-        |> List.map getScenicScore
-        |> List.max
-        |> string
+    List.allPairs [0 .. numRows - 1] [0 .. numCols - 1] |> List.map getScenicScore |> List.max |> string
