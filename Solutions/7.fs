@@ -1,7 +1,5 @@
 module Solutions.Seven
 
-
-// Filesystem module for modelling the current state of the FS we are building
 module FS = 
     type FSNode =
         | File of string * int
@@ -26,7 +24,6 @@ module FS =
             | File (_, _) -> []
             | Dir  (a, b) -> (a, getTotalSize (Dir (a, b))) :: (b |> List.map getDirectoryStatistics |> List.concat) 
 
-// Log module for modelling entries in the log
 module Log = 
     type Command = Cd of string | Ls
     type LogLine = 
@@ -44,8 +41,6 @@ module Log =
 
     let parseLog: string seq -> LogLine seq = Seq.map parseLogLine
 
-// Interpretter module for actually interpretting log commands
-// *points at cat* "// this is cat!"
 module Interpetter =
     open Log
     type InterpretterState = FS.FSNode list
@@ -70,8 +65,7 @@ module Interpetter =
 
 let readFSState = Log.parseLog >> Seq.skip 1 >> Seq.fold Interpetter.processLine ([FS.Dir ("/", [])]) >> Interpetter.collapseState >> Seq.head
 
-let partOne: string seq -> string = readFSState >> FS.getDirectoryStatistics >> List.filter (fun (_, b) -> b < 100000) >> List.sumBy (fun (_, b) -> b) >> string
-
+let partOne: string seq -> string = readFSState >> FS.getDirectoryStatistics >> List.filter (fun (_, dirSize) -> dirSize < 100000) >> List.sumBy (fun (_, dirSize) -> dirSize) >> string
 let partTwo (file: string seq) =
     let fsState = file |> readFSState |> FS.getDirectoryStatistics
     let (_, usedSpace) = fsState |> List.find (fun (name, _) -> name = "/")
