@@ -7,6 +7,9 @@
 
   <ItemGroup>
     <Compile Include="Solutions/*" />
+    <Compile Include="Solutions/7/filesystem.fs" />
+    <Compile Include="Solutions/7/log.fs" />
+    <Compile Include="Solutions/7/7.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
