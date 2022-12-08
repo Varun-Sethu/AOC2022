@@ -14,7 +14,7 @@ type FSNode =
                     | _ -> false
             | _ -> false
             
-let createOrUpdateEntity newEntity =
+let createEntity newEntity =
     function
         | Dir (name, files) -> 
             match List.tryFindIndex ((=) newEntity) files with
@@ -31,3 +31,8 @@ let rec getNodeStatistics = function
     | Dir  (a, b) -> let currNodeStat = (a, getNodeSize (Dir (a, b)))
                      let remainingStats =  (b |> List.map getNodeStatistics |> List.concat)
                      in currNodeStat :: remainingStats 
+
+let getDirectorySize dirname = 
+    getNodeStatistics 
+        >> List.find (fun (name, _) -> name = dirname) 
+        >> snd
