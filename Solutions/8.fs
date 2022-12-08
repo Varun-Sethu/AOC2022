@@ -1,37 +1,32 @@
 module Solutions.Eight
 
-
-let leftOf (row: int, col: int) = seq { for col' = col - 1 downto 0 do yield (row, col') }
-let topOf (row: int, col: int)  = seq { for row' = row - 1 downto 0 do yield (row', col) } 
-let rightOf (row: int, col: int) (numCols: int)  = seq { for col' in col + 1 .. numCols - 1 do yield (row, col') }
-let bottomOf (row: int, col: int) (numRows: int) = seq { for row' in row + 1 .. numRows - 1 do yield (row', col) }
-
 let parseGrid: string seq -> int array array = Seq.map (Seq.toArray >> Array.map (fun c -> int c - int '0')) >> Seq.toArray
-let indexGreaterThan x = Seq.tryFindIndex (fun v -> v >= x)
-
 let isBorderNode (numRows, numCols) (row, col) = row = 0 || col = 0 || row = numRows - 1 || col = numCols - 1
-let existsIndexGreaterThan x = indexGreaterThan x >> Option.isSome
-let numVisibleTrees x seq = match indexGreaterThan x seq with
+
+let existsIndexGreaterThan x = Seq.tryFindIndex (fun v -> v >= x) >> Option.isSome
+let numVisibleTrees x seq = match Seq.tryFindIndex (fun v -> v >= x) seq with
                                 | Some i -> i + 1
                                 | None   -> Seq.length seq
 
-let visibilityDirections numRows numCols (row, col) =
-    seq { rightOf (row, col) numCols; leftOf (row, col); bottomOf (row, col) numRows; topOf (row, col) }
+let visibilityDirections (grid: int array array) numRows numCols (row, col) =
+    seq {
+        seq { for col' = col - 1 downto 0 do yield grid[row][col'] }; // left
+        seq { for col' in col + 1 .. numCols - 1 do yield grid[row][col'] }; // right
+        seq { for row' = row - 1 downto 0 do yield grid[row'][col] } // above
+        seq { for row' in row + 1 .. numRows - 1 do yield grid[row'][col] } // below
+    }
 
 
 let isVisibleIn (grid: int array array) (numRows, numCols) (row, col) = 
     if isBorderNode (numRows, numCols) (row, col) then true
     else
-        let isVisible = visibilityDirections numRows numCols (row, col)
-                            |> Seq.map (Seq.map (fun (row', col') -> grid[row'][col']))
-                            |> Seq.exists (existsIndexGreaterThan (grid[row][col]) >> not)
-        isVisible
+        visibilityDirections grid numRows numCols (row, col)
+            |> Seq.exists (existsIndexGreaterThan (grid[row][col]) >> not)
 
 let scenicScoreFor (grid: int array array) (numRows, numCols) (row, col) = 
     if isBorderNode (numRows, numCols) (row, col) then 0
     else
-        visibilityDirections numRows numCols (row, col)
-            |> Seq.map (Seq.map (fun (row', col') -> grid[row'][col']))
+        visibilityDirections grid numRows numCols (row, col)
             |> Seq.map (numVisibleTrees (grid[row][col]))
             |> Seq.fold (*) 1
 
