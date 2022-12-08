@@ -28,18 +28,9 @@ module Interpetter =
             | _ -> processLine stateStack (Command (Cd "..")) |> evaluateState
 
 
-let readFSState = 
-    Seq.skip 1
-        >> Log.parseLog 
-        >> Seq.fold Interpetter.processLine Interpetter.emptyState 
-        >> Interpetter.evaluateState
+let readFSState = Seq.skip 1 >> Log.parseLog >> Seq.fold Interpetter.processLine Interpetter.emptyState >> Interpetter.evaluateState
 
-let partOne: string seq -> string = 
-    readFSState 
-        >> FS.getNodeStatistics 
-        >> List.filter (fun (_, dirSize) -> dirSize < 100000) 
-        >> List.sumBy (fun (_, dirSize) -> dirSize) 
-        >> string
+let partOne: string seq -> string = readFSState >> FS.getNodeStatistics >> List.filter (fun (_, dirSize) -> dirSize < 100000) >> List.sumBy (fun (_, dirSize) -> dirSize) >> string
 
 let partTwo (file: string seq) =
     let rootDir = readFSState file
