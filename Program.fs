@@ -15,6 +15,7 @@ let problemRunners = Map [
     (7, { partOne = Seven.partOne; partTwo = Seven.partTwo })
     (8, { partOne = Eight.partOne; partTwo = Eight.partTwo })
     (9, { partOne = Nine.partOne; partTwo = Nine.partTwo })
+    (10, { partOne = Ten.partOne; partTwo = Ten.partTwo })
 ]
 
 [<EntryPoint>]
