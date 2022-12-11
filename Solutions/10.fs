@@ -25,27 +25,23 @@ let getCycleValues (queries: int list) (instructions: Instruction list) =
     let mutable currCycle = 1
     let mutable currInstruction = 0
 
-    // kinda hacky but pad instructions till the length matches max query (becoz no breaks in F#)
-    let paddedIns = instructions @ (List.init ((List.max queries) - instructions.Length) (fun _ -> Noop))
-
     for query in queries do
-        while currCycle + getNumCycles paddedIns[currInstruction] <= query do
-            currCycle <- currCycle + getNumCycles paddedIns[currInstruction]
-            match paddedIns[currInstruction] with
-                | Noop      -> ()
-                | Add delta -> currValue <- currValue + delta
+        // kinda hacky because F# doesnt have breaks but this is equivalent anyways
+        if currInstruction <= instructions.Length then
+            while currCycle + getNumCycles instructions[currInstruction] <= query do
+                currCycle <- currCycle + getNumCycles instructions[currInstruction]
+                match instructions[currInstruction] with
+                    | Noop      -> ()
+                    | Add delta -> currValue <- currValue + delta
 
-            currInstruction <- currInstruction + 1
-        
+                currInstruction <- currInstruction + 1
+        else
+            currCycle <- query
         // query can now be answered altho we must use the old value :D
         answers <- (Map.add query currValue answers)
     answers
 
-let partOne: string seq -> string = Instruction.parseFile 
-                                        >> getCycleValues ([20; 60; 100; 140; 180; 220])
-                                        >> Map.fold (fun acc k v -> acc + k * v) 0
-                                        >> string
-
+let partOne: string seq -> string = Instruction.parseFile >> getCycleValues ([20; 60; 100; 140; 180; 220]) >> Map.fold (fun acc k v -> acc + k * v) 0 >> string
 let partTwo: string seq -> string =
     Instruction.parseFile
         >> getCycleValues (List.init 240 (fun i -> i + 1))
